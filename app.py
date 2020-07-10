@@ -195,7 +195,7 @@ def sector_performace(year):
                 where b.stock_symbol = a.symbol
                   and b.year = %s
                 group by gics_sector
-                order by abs(avg(cagr)) desc"""
+                order by avg(cagr) desc"""
     sectorPerf = pd.read_sql(sql_stat, connection, params=(year,))
     result = sectorPerf.to_json(orient='records', lines=False)
     return(result)
