@@ -200,14 +200,14 @@ def sector_performace(year):
     result = sectorPerf.to_json(orient='records', lines=False)
     return(result)
 #                           
-@app.route("/symbol_performance/<symbol>")
-def symbol_performace(symbol):
-    print("Server received request for 'symbol_performance' page...")
-    sql_stat = """select year, cagr
-                from stock_performance 
-                where stock_symbol = %s
+@app.route("/stock_performance")
+def stock_performace():
+    print("Server received request for 'stock_performance' page...")
+    sql_stat = """select a.gics_sector, a.security, a.symbol, b.year, b.close, b.cagr
+                from sp500 a, stock_performance b
+                where b.stock_symbol = a.symbol 
                 order by year"""
-    symbolPerf = pd.read_sql(sql_stat, connection, params=(symbol,))
+    symbolPerf = pd.read_sql(sql_stat, connection)
     # params=({"year":year,"sector": sector},)
     result = symbolPerf.to_json(orient='records', lines=False)
     return(result)
